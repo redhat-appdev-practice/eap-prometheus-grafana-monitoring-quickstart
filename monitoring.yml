@@ -39,6 +39,12 @@ spec:
           name: prometheus-data
         - mountPath: /etc/prometheus/prometheus.yml
           name: prometheus-config
+    - name: snmp-exporter
+      image: quay.io/cloud-native-runtimes/prometheus_snmp_exporter:0.24.1
+      restartPolicy: Always
+      ports:
+        - containerPort: 9116
+          hostPort: 9116
     - name: grafana
       image: docker.io/grafana/grafana:latest
       restartPolicy: Always
