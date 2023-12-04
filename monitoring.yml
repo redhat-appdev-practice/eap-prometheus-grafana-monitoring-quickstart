@@ -21,10 +21,39 @@ apiVersion: v1
 kind: Pod
 metadata:
   labels:
-    app: cache-wisely
+    app: telemetry
   name: monitoring
 spec:
   containers:
+    - name: jaeger
+      image: docker.io/jaegertracing/all-in-one:latest
+      restartPolicy: Always
+      ports:
+        - containerPort: 6831
+          hostPort: 6831
+          protocol: UDP
+        - containerPort: 5778
+          hostPort: 5778
+        - containerPort: 14268
+          hostPort: 14268
+        - containerPort: 16686
+          hostPort: 16686
+      env:
+        - name: SPAN_STORAGE_TYPE
+          value: badger
+        - name: BADGER_EPHEMERAL
+          value: 'false'
+        - name: BADGER_DIRECTORY_VALUE
+          value: /badger/data
+        - name: BADGER_DIRECTORY_KEY
+          value: /badger/key
+      resources:
+        limits:
+          cpu: 2
+          memory: 4Gi
+      volumeMounts:
+        - mountPath: /badger
+          name: jaeger-data
     - name: prometheus
       image: docker.io/prom/prometheus:latest
       restartPolicy: Always
@@ -39,22 +68,34 @@ spec:
           name: prometheus-data
         - mountPath: /etc/prometheus/prometheus.yml
           name: prometheus-config
+      resources:
+        limits:
+          cpu: 2
+          memory: 4Gi
     - name: snmp-exporter
       image: quay.io/cloud-native-runtimes/prometheus_snmp_exporter:0.24.1
       restartPolicy: Always
       ports:
         - containerPort: 9116
           hostPort: 9116
+      resources:
+        limits:
+          cpu: 2
+          memory: 4Gi
     - name: grafana
       image: docker.io/grafana/grafana:latest
       restartPolicy: Always
-#      env:
-#        - name: GF_AUTH_ANONYMOUS_ENABLED
-#          value: 'true'
-#        - name: GF_AUTH_ORG_ROLE
-#          value: Admin
-#        - name: GF_AUTH_DISABLE_LOGIN_FORM
-#          value: 'true'
+      env:
+        - name: GF_AUTH_ANONYMOUS_ENABLED
+          value: 'true'
+        - name: GF_AUTH_ORG_ROLE
+          value: Admin
+        - name: GF_AUTH_DISABLE_LOGIN_FORM
+          value: 'true'
+      resources:
+        limits:
+          cpu: 2
+          memory: 4Gi
       ports:
         - containerPort: 3000
           hostPort: 3000
