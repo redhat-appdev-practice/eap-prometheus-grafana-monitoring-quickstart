@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 3,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -602,31 +602,14 @@
             "uid": "PBFA97CFB590B2093"
           },
           "disableTextWrap": false,
-          "editorMode": "code",
-          "expr": "delta(jboss_undertow_total_request_time_total_seconds{job=\"metrics\", deployment=\"cache-wisely.war\", servlet=\"com.redhat.consulting.cache.wisely.DemoApplication\", microprofile_scope=\"vendor\", subdeployment=\"cache-wisely.war\"}[$__interval])",
+          "editorMode": "builder",
+          "expr": "delta(jboss_undertow_total_request_time_total_seconds{job=\"metrics\", deployment=\"cache-wisely.war\"}[$__interval]) / delta(jboss_undertow_request_count_total{job=\"metrics\", deployment=\"cache-wisely.war\"}[$__interval])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
           "legendFormat": "{{instance}}-avg",
           "range": true,
           "refId": "A",
-          "useBackend": false
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "PBFA97CFB590B2093"
-          },
-          "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "jboss_undertow_min_request_time_seconds{job=\"metrics\", deployment=\"cache-wisely.war\", servlet=\"com.redhat.consulting.cache.wisely.DemoApplication\", microprofile_scope=\"vendor\", subdeployment=\"cache-wisely.war\"}",
-          "fullMetaSearch": false,
-          "hide": false,
-          "includeNullMetadata": true,
-          "instant": false,
-          "legendFormat": "{{instance}}-min",
-          "range": true,
-          "refId": "B",
           "useBackend": false
         }
       ],
@@ -1606,13 +1589,13 @@
     "list": []
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "JBoss Caches",
   "uid": "e09b054e-207c-42e0-938a-b6563728f122",
-  "version": 49,
+  "version": 2,
   "weekStart": ""
 }
