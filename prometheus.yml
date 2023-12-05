@@ -35,9 +35,79 @@ scrape_configs:
     scrape_interval: 5s
     static_configs:
       - targets:
-          - '192.168.100.10:9990'
-          - '192.168.100.15:9990'
-          - '192.168.100.20:9990'
+        # Add hosts to collect JBoss metrics and the appropriate port
+        - '192.168.100.10:9990'
+        - '192.168.100.15:9990'
+        - '192.168.100.20:9990'
+    relabel_configs:
+    - source_labels: [__address__]
+      separator: ':'
+      regex: '192\.168\.100\.10:(.*)'
+      replacement: 'jboss01'
+      target_label: instance
+    - source_labels: [__address__]
+      separator: ':'
+      regex: '192\.168\.100\.15:(.*)'
+      replacement: 'jboss02'
+      target_label: instance
+    - source_labels: [__address__]
+      separator: ':'
+      regex: '192\.168\.100\.20:(.*)'
+      replacement: 'jboss03'
+      target_label: instance
+  # this is the configuration to poll metrics from the host OS
+  - job_name: 'host'
+    metrics_path: /metrics
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+        # Add hosts to collect OS metrics and the appropriate port
+        - '192.168.100.10:9100'
+        - '192.168.100.15:9100'
+        - '192.168.100.20:9100'
+        - '192.168.100.60:9100'
+        - '192.168.100.70:9100'
+    relabel_configs:
+    # Add relabelling if desired (Can be used to convert IP addresses to human-readable names)
+    - source_labels: [__address__]
+      separator: ':'
+      regex: '192\.168\.100\.10:(.*)'
+      replacement: 'jboss01'
+      target_label: instance
+    - source_labels: [__address__]
+      separator: ':'
+      regex: '192\.168\.100\.15:(.*)'
+      replacement: 'jboss02'
+      target_label: instance
+    - source_labels: [__address__]
+      separator: ':'
+      regex: '192\.168\.100\.20:(.*)'
+      replacement: 'jboss03'
+      target_label: instance
+    - source_labels: [__address__]
+      separator: ':'
+      regex: '192\.168\.100\.60:(.*)'
+      replacement: 'lb01'
+      target_label: instance
+    - source_labels: [__address__]
+      separator: ':'
+      regex: '192\.168\.100\.70:(.*)'
+      replacement: 'pg01'
+      target_label: instance
+  - job_name: 'haproxy'
+    metrics_path: /metrics
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+      # Add hosts for HAProxy Metrics
+        - '192.168.100.60:8004'
+    relabel_configs:
+    # Add relabelling if desired (Can be used to convert IP addresses to human-readable names)
+    - source_labels: [__address__]
+      separator: ':'
+      regex: '192\.168\.100\.60:(.*)'
+      replacement: 'lb01'
+      target_label: instance
   # The job name is added as a label `job=` to any timeseries scraped from this config.
   - job_name: 'prometheus'
     static_configs:

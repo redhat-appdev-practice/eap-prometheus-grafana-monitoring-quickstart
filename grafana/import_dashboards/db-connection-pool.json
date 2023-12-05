@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
+  "id": 1,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -119,44 +119,108 @@
         }
       ],
       "title": "Pool Timed Out",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "192.168.100.10:9990",
-            "renamePattern": "jboss01"
-          }
-        },
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "192.168.100.15:9990",
-            "renamePattern": "jboss02"
-          }
-        },
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "192.168.100.20:9990",
-            "renamePattern": "jboss03"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 13,
         "w": 12,
         "x": 12,
         "y": 0
       },
-      "id": 3,
-      "libraryPanel": {
-        "name": "DB ConnPool Time",
-        "uid": "e215ce7b-a63e-4d93-b16d-7b681717b0ef"
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
-      "title": "DB ConnPool Time"
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "jboss_infinispan_number_of_entries{cache_container=\"hibernate\", cache=\"cache-wisely.war#default.com.redhat.consulting.cache.wisely.Item\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{instance}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Entity Cache Count",
+      "transformations": [],
+      "type": "timeseries"
     },
     {
       "datasource": {
@@ -272,29 +336,7 @@
         }
       ],
       "title": "Pooled DB Connections",
-      "transformations": [
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "192.168.100.10:9990-(.*)",
-            "renamePattern": "jboss01-$1"
-          }
-        },
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "192.168.100.15:9990-(.*)",
-            "renamePattern": "jboss02-$1"
-          }
-        },
-        {
-          "id": "renameByRegex",
-          "options": {
-            "regex": "192.168.100.20:9990-(.*)",
-            "renamePattern": "jboss03-$1"
-          }
-        }
-      ],
+      "transformations": [],
       "type": "timeseries"
     }
   ],
@@ -312,6 +354,6 @@
   "timezone": "",
   "title": "Database Connection Pool",
   "uid": "fcb31463-7b5c-43bf-bc38-ca7c67d42d86",
-  "version": 9,
+  "version": 4,
   "weekStart": ""
 }

@@ -85,13 +85,13 @@ spec:
     - name: grafana
       image: docker.io/grafana/grafana:latest
       restartPolicy: Always
-      env:
-        - name: GF_AUTH_ANONYMOUS_ENABLED
-          value: 'true'
-        - name: GF_AUTH_ORG_ROLE
-          value: Admin
-        - name: GF_AUTH_DISABLE_LOGIN_FORM
-          value: 'true'
+      # env:
+      #   - name: GF_AUTH_ANONYMOUS_ENABLED
+      #     value: 'true'
+      #   - name: GF_AUTH_ORG_ROLE
+      #     value: Admin
+      #   - name: GF_AUTH_DISABLE_LOGIN_FORM
+      #     value: 'true'
       resources:
         limits:
           cpu: 2
@@ -118,3 +118,6 @@ spec:
     - name: grafana-provisioning
       hostPath:
         path: ${PWD}/grafana
+    - name: jaeger-data
+      persistentVolumeClaim:
+        claimName: jaeger-data

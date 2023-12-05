@@ -23,4 +23,9 @@ then
   podman volume create grafana-data
 fi
 
+if ! podman volume exists jaeger-data
+then
+  podman volume create jaeger-data
+fi
+
 cat monitoring.yml | envsubst | tee last-pod-run.yml | podman play kube --replace -
