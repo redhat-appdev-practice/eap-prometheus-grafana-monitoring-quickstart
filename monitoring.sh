@@ -13,6 +13,16 @@
 ## See the License for the specific language governing permissions and
 ## limitations under the License.
 
+export ENABLE_ALERT_MANAGER=0
+
+while getopts "a:" arg; do
+  case $arg in
+    a)
+      echo "Enable AlertManager"
+      export ENABLE_ALERT_MANAGER=1
+      ;;
+  esac
+
 if ! podman volume exists prometheus-data
 then
   podman volume create prometheus-data
@@ -28,4 +38,13 @@ then
   podman volume create jaeger-data
 fi
 
-cat monitoring.yml | envsubst | tee last-pod-run.yml | podman play kube --replace -
+if [ ${ENABLE_ALERT_MANAGER} -eq 1 ]; then
+  cat monitoring.yml | envsubst | \
+    tee last-pod-run.yml | podman play kube --replace -
+else 
+  cat monitoring.yml | 
+    yq 'del(.spec.containers.[] | select(.name == "alertmanager") )' | \
+    yq 'del(.spec.volumes.[] | select(.name == "alertmanager-config") )' | \
+    envsubst | tee last-pod-run.yml | \
+    podman play kube --replace -
+fi

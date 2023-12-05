@@ -12,7 +12,6 @@
 ## See the License for the specific language governing permissions and
 ## limitations under the License.
 
-
 # Save the output of this file and use kubectl create -f to import
 # it into Kubernetes.
 #
@@ -72,16 +71,21 @@ spec:
         limits:
           cpu: 2
           memory: 4Gi
-    - name: snmp-exporter
-      image: quay.io/cloud-native-runtimes/prometheus_snmp_exporter:0.24.1
+    - name: alertmanager
+      image: quay.io/prometheus/alertmanager:latest
       restartPolicy: Always
-      ports:
-        - containerPort: 9116
-          hostPort: 9116
       resources:
         limits:
           cpu: 2
-          memory: 4Gi
+          memory: 2Gi
+      args:
+        - '--config.file=/etc/alertmanager/alertmanager.yml'
+      ports:
+        - containerPort: 9093
+          hostPort: 9093
+      volumeMounts:
+        - mountPath: /etc/alertmanager/alertmanager.yml
+          name: alertmanager-config
     - name: grafana
       image: docker.io/grafana/grafana:latest
       restartPolicy: Always
@@ -121,3 +125,7 @@ spec:
     - name: jaeger-data
       persistentVolumeClaim:
         claimName: jaeger-data
+    - name: alertmanager-config
+      hostPath:
+        path: ${PWD}/alertmanager.yml
+        type: File
