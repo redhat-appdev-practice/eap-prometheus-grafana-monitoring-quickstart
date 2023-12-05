@@ -103,3 +103,11 @@ If you wish to have a test configuration for alerting using Prometheus, then you
 1. Edit [alertmanager.yml](alertmanager.yml) and configure your alert routes and connections based on documentation [HERE](https://prometheus.io/docs/alerting/latest/configuration/)
 1. Update the running pod by running the `monitoring.sh` script with the `-a` argument
    `./monitoring.sh -a`
+
+## Included Dashboards
+
+This quick-start includes from pre-configured dashboards for various metrics. Examples of those dashboards are shown below:
+
+- JBoss EAP Dashboard ![JBoss EAP Dashboard](images/JBoss_EAP_Dashboard.png)
+- Linux OS Dashboard ![Linux OS Dashboard](images/Linux_OS_Dashboard.png)
+- HAProxy Dashboard ![HAProxy Dashboard](images/HAProxy_Dashboard.png)
