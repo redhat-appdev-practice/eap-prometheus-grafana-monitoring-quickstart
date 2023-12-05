@@ -1,10 +1,12 @@
 # Overview
 
-This repository is a quick start for running Prometheus and Grafana using https://podman.io/[podman]. The configuration files are set up to monitor JBoss EAP/Wildlfy Enterprise Java Application Servers. Collecting the metrics is intended to be used with various tuning guides in order to improve performance of applications running on the application server(s).
+This repository is a quick start for running Prometheus, Jaeger, and Grafana using [podman](https://podman.io/). The configuration files are set up to monitor JBoss EAP/Wildlfy Enterprise Java Application Servers. Collecting the metrics is intended to be used with various tuning guides in order to improve performance of applications running on the application server(s).
 
 ## Prerequisites
 
 * Podman >= 4.0
+* Bourne/Bourne-again compatible shell
+* [yq](https://mikefarah.gitbook.io/yq)
 * One or more JBoss EAP/Wildfly instances configured such that the management interface is accessible
 * OPTIONAL: A [`node_exporter`](https://github.com/prometheus/node_exporter) running on the target system to monitor OS metrics
 
@@ -92,3 +94,12 @@ This repository is a quick start for running Prometheus and Grafana using https:
 1. Click on **Dashboards**
 
 You can now start creating visualizations using the Prometheus datasource
+
+
+## Alerting
+
+If you wish to have a test configuration for alerting using Prometheus, then you can also enable AlertManager.
+
+1. Edit [alertmanager.yml](alertmanager.yml) and configure your alert routes and connections based on documentation [HERE](https://prometheus.io/docs/alerting/latest/configuration/)
+1. Update the running pod by running the `monitoring.sh` script with the `-a` argument
+   `./monitoring.sh -a`
